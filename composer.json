@@ -1,0 +1,17 @@
+{
+    "name": "discite/disc-htmldom-php",
+    "description": "Discite Html component generator from php. Help to sanitize, format and perform html component",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "DisciteHtml\\": "src/DisciteHtml/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Romain QUINTAINE"
+        }
+    ],
+    "require": {}
+}
