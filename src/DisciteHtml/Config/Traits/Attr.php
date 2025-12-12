@@ -69,6 +69,23 @@ trait Attr
         return $obj;
     }
 
+    /**
+     * Remove a specific Attr.
+     *
+     * @param string $attrName The Attr element to remove.
+     * @return static The current instance for method chaining.
+     */
+    public function removeAttr(string $attrName) : static
+    {
+        $obj = $this->isPreset();
+        
+        if(isset($obj->attr[$attrName]))
+        {
+            unset($obj->attr[$attrName]);
+        }
+        return $obj;
+    }
+
     
     /**
      * Check if a specific attr exists.

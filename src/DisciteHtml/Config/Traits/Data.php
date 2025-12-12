@@ -34,6 +34,39 @@ trait Data
     }
 
     /**
+     * Add a Data.
+     *
+     * @param string $dataName The Data name.
+     * @param mixed $dataValue The Data value.
+     * 
+     * @return static
+     */
+    public function data(string $dataName, mixed $dataValue) : static
+    {
+        $obj = $this->isPreset();
+
+        $obj->data[$dataName] = $dataValue;
+        return $obj;
+    }
+
+    /**
+     * Remove a specific Data.
+     *
+     * @param string $dataName The Data element to remove.
+     * @return static The current instance for method chaining.
+     */
+    public function removeData(string $dataName) : static
+    {
+        $obj = $this->isPreset();
+
+        if(isset($obj->data[$dataName]))
+        {
+            unset($obj->data[$dataName]);
+        }
+        return $obj;
+    }
+
+    /**
      * Check if a specific Data exists.
      *
      * @param string $dataName The Data element to check.

@@ -18,14 +18,14 @@ use DisciteHtml\DisciteHtml;
 trait Childs
 {
     /**
-     * Array of childs.
+     * Array of children.
      *
      * @var array<\DisciteHtml\Config\Classes\Element|string|int|float>
      */
     private array $childs = [];
 
     /**
-     * Get the array of childs.
+     * Get the array of children.
      *
      * @return array<\DisciteHtml\Config\Classes\Element|string|int|float>
      */
@@ -48,6 +48,19 @@ trait Childs
         $obj->childs[] = $child;
         return $obj;
     }
+
+    /**
+     * Alias for add() method to add a Child.
+     *
+     * @param \DisciteHtml\Config\Classes\Element|string|int|float $child The child to add.
+     * 
+     * @return static
+     */
+    public function child(Element|string|int|float $child) : static
+    {
+        return $this->add($child);
+    }
+
 }
 
 ?>

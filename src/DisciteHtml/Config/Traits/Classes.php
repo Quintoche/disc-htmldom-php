@@ -19,6 +19,12 @@ trait Classes
     private array $class = [];
 
 
+    /**
+     * Get or set the CSS classes.
+     *
+     * @param array|null $classes An array of CSS classes to set, or null to get the current classes.
+     * @return static|array The current instance or the array of CSS classes.
+     */
     public function classes(?array $classes = null) : static|array
     {
         $obj = $this->isPreset();
@@ -32,6 +38,40 @@ trait Classes
             $obj->class = $classes;
             return $obj;
         }
+    }
+
+    /**
+     * Add a CSS class.
+     *
+     * @param string $class The CSS class to add.
+     * @return static The current instance for method chaining.
+     */
+    public function class(string $class) : static
+    {
+        $obj = $this->isPreset();
+
+        if(!in_array($class, $obj->class))
+        {
+            $obj->class[] = $class;
+        }
+        return $obj;
+    }
+
+    /**
+     * Remove a CSS class.
+     *
+     * @param string $class The CSS class to remove.
+     * @return static The current instance for method chaining.
+     */
+    public function removeClass(string $class) : static
+    {
+        $obj = $this->isPreset();
+
+        if(($key = array_search($class, $obj->class)) !== false)
+        {
+            unset($obj->class[$key]);
+        }
+        return $obj;
     }
 
     /**
