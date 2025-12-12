@@ -45,6 +45,10 @@ use DisciteHtml\Elements\Paired\Thead;
 use DisciteHtml\Elements\Paired\Tr;
 use DisciteHtml\Elements\Paired\Ul;
 use DisciteHtml\Elements\Paired\Base;
+use DisciteHtml\Elements\Paired\G;
+use DisciteHtml\Elements\Paired\Path;
+use DisciteHtml\Elements\Paired\Svg;
+use DisciteHtml\Elements\Paired\Title;
 use DisciteHtml\Elements\Voided\Br;
 use DisciteHtml\Elements\Voided\Hr;
 use DisciteHtml\Elements\Voided\Img;
@@ -79,6 +83,8 @@ class AppElements
 
     const ELEMENT_FORM = Form::class;
 
+    const ELEMENT_G = G::class;
+
     const ELEMENT_H1 = H1::class;
 
     const ELEMENT_H2 = H2::class;
@@ -109,6 +115,8 @@ class AppElements
 
     const ELEMENT_P = P::class;
 
+    const ELEMENT_PATH = Path::class;
+
     const ELEMENT_SCRIPT = Script::class;
 
     const ELEMENT_SECTION = Section::class;
@@ -118,6 +126,8 @@ class AppElements
     const ELEMENT_SPAN = Span::class;
 
     const ELEMENT_STRONG = Strong::class;
+
+    const ELEMENT_SVG = Svg::class;
 
     const ELEMENT_TABLE = Table::class;
 
@@ -132,6 +142,8 @@ class AppElements
     const ELEMENT_TH = Th::class;
 
     const ELEMENT_THEAD = Thead::class;
+
+    const ELEMENT_TITLE = Title::class;
 
     const ELEMENT_TR = Tr::class;
 

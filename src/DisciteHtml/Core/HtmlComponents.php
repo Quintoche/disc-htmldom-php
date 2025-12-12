@@ -48,8 +48,11 @@ use DisciteHtml\Elements\Paired\Thead;
 use DisciteHtml\Elements\Paired\Tr;
 use DisciteHtml\Elements\Paired\Ul;
 use DisciteHtml\Elements\Paired\Base;
+use DisciteHtml\Elements\Paired\G;
 use DisciteHtml\Elements\Paired\Link;
+use DisciteHtml\Elements\Paired\Path;
 use DisciteHtml\Elements\Paired\Script;
+use DisciteHtml\Elements\Paired\Svg;
 use DisciteHtml\Elements\Paired\Title;
 use DisciteHtml\Elements\Voided\Br;
 use DisciteHtml\Elements\Voided\Hr;
@@ -227,6 +230,19 @@ class HtmlComponents
     public static function Form() : Form
     {
         return new Form();
+    }
+
+
+    /**
+     * G element
+     * 
+     * Creates and returns a new instance of the G HTML element.
+     * 
+     * @return G
+     */
+    public static function G() : G
+    {
+        return new G();
     }
 
 
@@ -426,6 +442,19 @@ class HtmlComponents
 
 
     /**
+     * Path element
+     * 
+     * Creates and returns a new instance of the Path HTML element.
+     * 
+     * @return Path
+     */
+    public static function Path() : Path
+    {
+        return new Path();
+    }
+    
+
+    /**
      * Script element
      * 
      * Creates and returns a new instance of the Script HTML element.
@@ -490,6 +519,19 @@ class HtmlComponents
     }
 
 
+    /**
+     * Svg element
+     * 
+     * Creates and returns a new instance of the Svg HTML element.
+     * 
+     * @return Svg
+     */
+    public static function Svg() : Svg
+    {
+        return new Svg();
+    }
+
+    
     /**
      * Table element
      * 
