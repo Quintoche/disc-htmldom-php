@@ -4,6 +4,7 @@ namespace DisciteHtml\Elements\Paired;
 
 use DisciteHtml\Config\Classes\Element;
 use DisciteHtml\Config\Classes\PairedClass;
+use DisciteHtml\Config\Classes\TBodyClass;
 use DisciteHtml\Config\Enums\Inputs\InputType;
 use DisciteHtml\DisciteHtml;
 
@@ -33,8 +34,18 @@ final class Tbody extends PairedClass
     */
     protected array $rows = [];
 
+    /** 
+     * Indicates if the table has a checkbox column. 
+     * 
+     * @var bool
+    */
     protected bool $hasCheckbox = false;
 
+    /** 
+     * Indicates if the table has an actions column. 
+     * 
+     * @var bool
+    */
     protected bool $hasActions = false;
 
 
@@ -68,6 +79,27 @@ final class Tbody extends PairedClass
     */
     protected ?Element $defaultEmptyDatabase;
 
+    /** 
+     * Table classes configuration. 
+     * 
+     * @var TBodyClass
+    */
+    protected TBodyClass $attributes;
+
+    public function __construct()
+    {
+        $this->attributes = new TBodyClass();
+    }
+
+    /** 
+     * Get the table classes configuration.
+     * 
+     * @return TBodyClass
+    */
+    public function attributes() : TbodyClass
+    {
+        return $this->attributes;
+    }
 
     /** 
      * Converts the element to HTML string.
@@ -113,11 +145,11 @@ final class Tbody extends PairedClass
     public function emptyDatabase(Element $emptyDatabase) : static
     {
         $this->defaultEmptyDatabase = DisciteHtml::Tr()
-            ->classes(['discite-table-row-empty'])
+            ->class($this->attributes()->emptyTableClass())
             ->add(
                 DisciteHtml::Td()
                     ->attr('colspan', (string)(($this->hasCheckbox ? 1 : 0) + sizeof($this->columns) + ($this->hasActions ? 1 : 0)))
-                    ->classes(['discite-table-empty'])
+                    ->class($this->attributes()->emptyClass())
                     ->add(
                         $emptyDatabase
                     )
@@ -147,8 +179,8 @@ final class Tbody extends PairedClass
     {
 
         $elements = DisciteHtml::Tr()
-            ->classes(['discite-table-row'])
-            ->datas(['row-index' => (string)(sizeof($this->childs()))]);
+            ->class($this->attributes()->rowClass())
+            ->attr($this->attributes()->rowIndexData(), (string)(sizeof($this->childs())));
 
         $i = 0;
 
@@ -156,8 +188,9 @@ final class Tbody extends PairedClass
         {
             $elements->add(
                 DisciteHtml::Td()
-                    ->classes(['discite-table-checkbox'])
-                    ->datas(['row-index' => (string)(sizeof($this->childs())),'column-index' => (string)($i)])
+                    ->class($this->attributes()->checkboxClass())
+                    ->attr($this->attributes()->rowIndexData(), (string)(sizeof($this->childs())))
+                    ->attr($this->attributes()->columnIndexData(), (string)($i))
                     ->add(
                         $this->defaultCheckboxColumn
                     )
@@ -168,7 +201,9 @@ final class Tbody extends PairedClass
         {
             $elements->add(
                 ($this->columns[$i] ?? DisciteHtml::Td())
-                    ->datas(['row-index' => (string)(sizeof($this->childs())),'column-index' => (string)($i + 1)])
+                    ->class(is_null($element) && isset($this->defaultEmptyColumn) ? $this->attributes()->emptyClass() : $this->attributes()->columnClass())
+                    ->attr($this->attributes()->rowIndexData(), (string)(sizeof($this->childs())))
+                    ->attr($this->attributes()->columnIndexData(), (string)($i + 1))
                     ->add(
                         is_null($element) && isset($this->defaultEmptyColumn) ? clone $this->defaultEmptyColumn : $element
                     )
@@ -181,8 +216,9 @@ final class Tbody extends PairedClass
         {
             $elements->add(
                 DisciteHtml::Td()
-                    ->classes(['discite-table-actions'])
-                    ->datas(['row-index' => (string)(sizeof($this->childs())),'column-index' => (string)($i + 1)])
+                    ->class($this->attributes()->actionsClass())
+                    ->attr($this->attributes()->rowIndexData(), (string)(sizeof($this->childs())))
+                    ->attr($this->attributes()->columnIndexData(), (string)($i + 1))
                     ->add(
                         $this->defaultActionsColumn
                     )

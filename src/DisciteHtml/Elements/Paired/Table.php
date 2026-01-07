@@ -156,13 +156,25 @@ final class Table extends PairedClass
 
     /** Add a header row.
      *
-     * @param Element|null ...$columnElements The columns to add to a row.
+     * @param Element|null $columnElements The columns to add to a row.
      * 
      * @return static
      */
-    public function header(Element|null ...$columnElements) : static
+    public function header(Element|null $columnElements) : static
     {
-        $this->thead->rows(...$columnElements);
+        $this->thead->column($columnElements);
+        return $this;
+    }
+
+    /** Set header rows.
+     *
+     * @param Element|null ...$columnElements Columns to set to row.
+     * 
+     * @return static
+     */
+    public function headers(Element|null ...$columnElements) : static
+    {
+        $this->thead->columns(...$columnElements);
         return $this;
     }
 

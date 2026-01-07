@@ -67,7 +67,7 @@ trait Rendering
 
         $this->renderInputs();
         $this->renderLinks();
-        $this->renderFor();
+        $this->renderLabels();
         $this->renderAttributes();
 
         $this->innerOutput = array_filter($this->innerOutput, fn($value) => !is_null($value) && $value !== '');
@@ -84,6 +84,7 @@ trait Rendering
     {
         $this->innerOutput[] = $this->renderId();
         $this->innerOutput[] = $this->renderTitle();
+        $this->innerOutput[] = $this->renderName();
     }
 
     /**
@@ -117,6 +118,7 @@ trait Rendering
     protected function renderLinks() : void
     {
         $this->innerOutput[] = $this->renderHref();
+        $this->innerOutput[] = $this->renderSrc();
     }
 
     /**
@@ -166,6 +168,18 @@ trait Rendering
     }
 
     /**
+     * Renderers for name
+     * 
+     * Renders the name attribute for the HTML element.
+     * 
+     * @return string The rendered name attribute.
+     */
+    protected function renderName() : string
+    {
+        return (isset($this->name)) ? 'name="' . $this->name . '"' : '';
+    }
+
+    /**
      * Renderers for href
      * 
      * Renders the href attribute for the HTML element.
@@ -175,6 +189,18 @@ trait Rendering
     protected function renderHref() : string
     {
         return (isset($this->href)) ? 'href="' . $this->href . '"' : '';
+    }
+
+    /**
+     * Renderers for src
+     * 
+     * Renders the src attribute for the HTML element.
+     * 
+     * @return string The rendered src attribute.
+     */
+    protected function renderSrc() : string
+    {
+        return (isset($this->src)) ? 'src="' . $this->src . '"' : '';
     }
 
     /**

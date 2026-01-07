@@ -4,7 +4,7 @@ namespace DisciteHtml\Elements\Paired;
 
 use DisciteHtml\Config\Classes\Element;
 use DisciteHtml\Config\Classes\PairedClass;
-use DisciteHtml\Config\Enums\Inputs\InputType;
+use DisciteHtml\Config\Classes\THeadClass;
 use DisciteHtml\DisciteHtml;
 
 /**
@@ -17,7 +17,6 @@ use DisciteHtml\DisciteHtml;
 final class Thead extends PairedClass
 {
     protected string $tag = 'thead';
-
 
     /** 
      * Rows templates for the tbody. 
@@ -50,6 +49,20 @@ final class Thead extends PairedClass
     */
     protected bool $hasActions = false;
 
+    /** 
+     * Indicates if the table has created a checkbox column. 
+     * 
+     * @var bool
+    */
+    protected bool $checkBoxAdded = false;
+
+    /** 
+     * Indicates if the table has created an actions column. 
+     * 
+     * @var bool
+    */
+    protected bool $actionsAdded = false;
+
 
     /** 
      * Default element for empty columns. 
@@ -74,14 +87,38 @@ final class Thead extends PairedClass
     */
     protected ?Element $defaultActionsColumn;
 
+    /** 
+     * Table classes configuration. 
+     * 
+     * @var THeadClass
+    */
+    protected THeadClass $attributes;
+
     
     public function __construct()
     {
+        $this->attributes = new THeadClass();
+        
         $this->defaultCheckboxColumn = DisciteHtml::P()->add('');
         $this->defaultEmptyColumn = DisciteHtml::P()->add('');
         $this->defaultActionsColumn = DisciteHtml::P()->add('');
     }
 
+    /** 
+     * Get the table classes configuration.
+     * 
+     * @return THeadClass
+    */
+    public function attributes() : THeadClass
+    {
+        return $this->attributes;
+    }
+
+    public function toHtml(): string
+    {
+        $this->formatColumns();
+        return parent::toHtml();
+    }
 
     /** Set a template for a specific column.
      *
@@ -109,52 +146,75 @@ final class Thead extends PairedClass
         return $this->columns[$index] ?? null;
     }
 
-    /** Add multiple rows at once.
+    /** Add a single column at once.
+     *
+     * @param Element|null $columnElement The column to add to a row.
+     * 
+     * @return $this
+     */
+    public function column(Element|null $columnElement) : static
+    {   
+        $this->rows[] = $this->columns[count($this->rows) + 1] ?? DisciteHtml::Th()
+                ->data($this->attributes()->columnIndexData(), (string)(count($this->rows) + 1))
+                ->add(
+                    is_null($columnElement) && isset($this->defaultEmptyColumn) ? clone $this->defaultEmptyColumn : $columnElement
+                );
+    
+        return $this;
+    }
+
+
+    /** Add multiple columns at once.
      *
      * @param Element|null ...$columnElements The columns to add to a row.
      * 
      * @return $this
      */
-    public function rows(Element|null ...$columnElements) : static
+    public function columns(Element|null ...$columnElements) : static
     {
         $elements = DisciteHtml::Tr()
-            ->classes(['discite-table-head-row']);
+            ->class($this->attributes()->rowClass());
 
         $i = 0;
 
-        if($this->hasCheckbox)
+        if($this->hasCheckbox && !$this->checkBoxAdded)
         {
             $elements->add(
                 DisciteHtml::Th()
-                    ->classes(['discite-table-head-row-checkbox'])
-                    ->datas(['column-index' => (string)($i)])
+                    ->class($this->attributes()->checkboxClass())
+                    ->data($this->attributes()->columnIndexData(), (string)($i))
                     ->add(
                         $this->defaultCheckboxColumn
                     )
             );
+
+            $this->checkBoxAdded = true;
         }
         
         foreach($columnElements as $element)
         {
             $elements->add(
                 $this->columns[$i] ?? DisciteHtml::Th()
-                    ->datas(['column-index' => (string)($i + 1)])
+                    ->class(is_null($element) && isset($this->defaultEmptyColumn) ? $this->attributes()->emptyClass() : $this->attributes()->columnClass())
+                    ->data($this->attributes()->columnIndexData(), (string)($i + 1))
                     ->add(
                         is_null($element) && isset($this->defaultEmptyColumn) ? clone $this->defaultEmptyColumn : $element
                     )
             );
         }
 
-        if($this->hasActions)
+        if($this->hasActions && !$this->actionsAdded)
         {
             $elements->add(
                 DisciteHtml::Th()
-                    ->classes(['discite-table-head-row-actions'])
-                    ->datas(['column-index' => (string)($i + 1)])
+                    ->class($this->attributes()->actionsClass())
+                    ->data($this->attributes()->columnIndexData(), (string)($i + 1))
                     ->add(
                         $this->defaultActionsColumn
                     )
             );
+
+            $this->actionsAdded = true;
         }
 
         $this->add(
@@ -246,6 +306,60 @@ final class Thead extends PairedClass
     {
         $this->defaultEmptyColumn = $element;
         return $this;
+    }
+
+    /** 
+     * Format the columns for the thead.
+     * 
+     * Format columns by adding checkbox and actions columns if enabled, before and after the defined columns respectively.
+     * Function does not return anything, modifies the internal state before creating html.
+     *
+     * @return void
+     */
+    protected function formatColumns() : void
+    {
+        $elements = DisciteHtml::Tr()
+            ->class($this->attributes()->rowClass());
+
+        if($this->hasCheckbox && !$this->checkBoxAdded)
+        {
+            $elements->add(
+                DisciteHtml::Th()
+                    ->class($this->attributes()->checkboxClass())
+                    ->data($this->attributes()->columnIndexData(), '0')
+                    ->add(
+                        $this->defaultCheckboxColumn
+                    )
+            );
+
+            $this->checkBoxAdded = true;
+        }
+
+        foreach($this->rows as $i => $columnElement)
+        {
+            $elements->add(
+                $this->columns[$i] ?? DisciteHtml::Th()
+                    ->class(is_null($columnElement) && isset($this->defaultEmptyColumn) ? $this->attributes()->emptyClass() : $this->attributes()->columnClass())
+                    ->data($this->attributes()->columnIndexData(), (string)($i + 1))
+                    ->add(
+                        is_null($columnElement) && isset($this->defaultEmptyColumn) ? clone $this->defaultEmptyColumn : $columnElement
+                    )
+            );
+        }
+
+        if($this->hasActions && !$this->actionsAdded)
+        {
+            $elements->add(
+                DisciteHtml::Th()
+                    ->class($this->attributes()->actionsClass())
+                    ->data($this->attributes()->columnIndexData(), (string)(count($this->rows) + 2))
+                    ->add(
+                        $this->defaultActionsColumn
+                    )
+            );
+
+            $this->actionsAdded = true;
+        }
     }
 }
 

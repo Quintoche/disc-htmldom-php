@@ -45,6 +45,7 @@ use DisciteHtml\Elements\Paired\Thead;
 use DisciteHtml\Elements\Paired\Tr;
 use DisciteHtml\Elements\Paired\Ul;
 use DisciteHtml\Elements\Paired\Base;
+use DisciteHtml\Elements\Paired\Body;
 use DisciteHtml\Elements\Paired\G;
 use DisciteHtml\Elements\Paired\Path;
 use DisciteHtml\Elements\Paired\Svg;
@@ -70,6 +71,10 @@ class AppElements
     const ELEMENT_ASIDE = Aside::class;
 
     const ELEMENT_B = B::class;
+
+    const ELEMENT_BASE = Base::class;
+
+    const ELEMENT_BODY = Body::class;
 
     const ELEMENT_BUTTON = Button::class;
 
@@ -148,8 +153,6 @@ class AppElements
     const ELEMENT_TR = Tr::class;
 
     const ELEMENT_UL = Ul::class;
-
-    const ELEMENT_BASE = Base::class;
 
     const ELEMENT_BR = Br::class;
 

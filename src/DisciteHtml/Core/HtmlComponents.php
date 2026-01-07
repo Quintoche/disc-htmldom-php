@@ -48,7 +48,9 @@ use DisciteHtml\Elements\Paired\Thead;
 use DisciteHtml\Elements\Paired\Tr;
 use DisciteHtml\Elements\Paired\Ul;
 use DisciteHtml\Elements\Paired\Base;
+use DisciteHtml\Elements\Paired\Body;
 use DisciteHtml\Elements\Paired\G;
+use DisciteHtml\Elements\Paired\Hgroup;
 use DisciteHtml\Elements\Paired\Link;
 use DisciteHtml\Elements\Paired\Path;
 use DisciteHtml\Elements\Paired\Script;
@@ -152,6 +154,19 @@ class HtmlComponents
     public static function B() : B
     {
         return new B();
+    }
+
+
+    /**
+     * Body element
+     * 
+     * Creates and returns a new instance of the Body HTML element.
+     * 
+     * @return Body
+     */
+    public static function Body() : Body
+    {
+        return new Body();
     }
 
 
@@ -347,6 +362,19 @@ class HtmlComponents
     public static function Header() : Header
     {
         return new Header();
+    }
+
+    
+    /**
+     * Hgroup element
+     * 
+     * Creates and returns a new instance of the Hgroup HTML element.
+     * 
+     * @return Hgroup
+     */
+    public static function Hgroup() : Hgroup
+    {
+        return new Hgroup();
     }
 
 
