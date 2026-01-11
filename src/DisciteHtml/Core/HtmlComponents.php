@@ -55,6 +55,7 @@ use DisciteHtml\Elements\Paired\Link;
 use DisciteHtml\Elements\Paired\Path;
 use DisciteHtml\Elements\Paired\Script;
 use DisciteHtml\Elements\Paired\Svg;
+use DisciteHtml\Elements\Paired\Template;
 use DisciteHtml\Elements\Paired\Title;
 use DisciteHtml\Elements\Voided\Br;
 use DisciteHtml\Elements\Voided\Hr;
@@ -364,7 +365,7 @@ class HtmlComponents
         return new Header();
     }
 
-    
+
     /**
      * Hgroup element
      * 
@@ -596,6 +597,19 @@ class HtmlComponents
     public static function Td() : Td
     {
         return new Td();
+    }
+
+
+    /**
+     * Template element
+     * 
+     * Creates and returns a new instance of the Template HTML element.
+     * 
+     * @return Template
+     */
+    public static function Template() : Template
+    {
+        return new Template();
     }
 
 

@@ -14,6 +14,16 @@ use DisciteHtml\Config\Classes\PairedClass;
 final class Tfoot extends PairedClass
 {
     protected string $tag = 'tfoot';
+
+    /**
+     * Count the number of children
+     * 
+     * @return int
+     */
+    public function count() : int
+    {
+        return sizeof($this->childs());
+    }
 }
 
 ?>

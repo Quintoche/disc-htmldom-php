@@ -4,7 +4,7 @@ namespace DisciteHtml\Config\Classes;
 
 use DisciteHtml\Config\Traits\THeadAttributes;
 
-abstract class THeadClass
+class THeadClass
 {
     use THeadAttributes;
 }

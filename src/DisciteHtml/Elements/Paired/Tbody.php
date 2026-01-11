@@ -195,6 +195,8 @@ final class Tbody extends PairedClass
                         $this->defaultCheckboxColumn
                     )
             );
+
+            $i++;
         }
 
         foreach($columnElements as $element)
@@ -203,7 +205,7 @@ final class Tbody extends PairedClass
                 ($this->columns[$i] ?? DisciteHtml::Td())
                     ->class(is_null($element) && isset($this->defaultEmptyColumn) ? $this->attributes()->emptyClass() : $this->attributes()->columnClass())
                     ->attr($this->attributes()->rowIndexData(), (string)(sizeof($this->childs())))
-                    ->attr($this->attributes()->columnIndexData(), (string)($i + 1))
+                    ->attr($this->attributes()->columnIndexData(), (string)($i))
                     ->add(
                         is_null($element) && isset($this->defaultEmptyColumn) ? clone $this->defaultEmptyColumn : $element
                     )
@@ -218,7 +220,7 @@ final class Tbody extends PairedClass
                 DisciteHtml::Td()
                     ->class($this->attributes()->actionsClass())
                     ->attr($this->attributes()->rowIndexData(), (string)(sizeof($this->childs())))
-                    ->attr($this->attributes()->columnIndexData(), (string)($i + 1))
+                    ->attr($this->attributes()->columnIndexData(), (string)($i))
                     ->add(
                         $this->defaultActionsColumn
                     )

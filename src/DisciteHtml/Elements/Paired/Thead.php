@@ -115,7 +115,7 @@ final class Thead extends PairedClass
     }
 
     public function toHtml(): string
-    {
+    {   
         $this->formatColumns();
         return parent::toHtml();
     }
@@ -148,29 +148,37 @@ final class Thead extends PairedClass
 
     /** Add a single column at once.
      *
-     * @param Element|null $columnElement The column to add to a row.
+     * @param mixed $columnElement The column to add to a row.
      * 
      * @return $this
      */
-    public function column(Element|null $columnElement) : static
+    public function column(mixed $columnElement) : static
     {   
-        $this->rows[] = $this->columns[count($this->rows) + 1] ?? DisciteHtml::Th()
-                ->data($this->attributes()->columnIndexData(), (string)(count($this->rows) + 1))
-                ->add(
-                    is_null($columnElement) && isset($this->defaultEmptyColumn) ? clone $this->defaultEmptyColumn : $columnElement
-                );
-    
+        if($columnElement instanceof Th)
+        {
+            $this->rows[] = $columnElement
+                    ->class(is_null($columnElement) && isset($this->defaultEmptyColumn) ? $this->attributes()->emptyClass() : $this->attributes()->columnClass());
+        }
+        else
+        {
+            $this->rows[] = $this->columns[count($this->rows) + 1] ?? DisciteHtml::Th()
+                    ->class(is_null($columnElement) && isset($this->defaultEmptyColumn) ? $this->attributes()->emptyClass() : $this->attributes()->columnClass())
+                    ->add(
+                        is_null($columnElement) && isset($this->defaultEmptyColumn) ? clone $this->defaultEmptyColumn : $columnElement
+                    );
+        }
+        
         return $this;
     }
 
 
     /** Add multiple columns at once.
      *
-     * @param Element|null ...$columnElements The columns to add to a row.
+     * @param mixed ...$columnElements The columns to add to a row.
      * 
      * @return $this
      */
-    public function columns(Element|null ...$columnElements) : static
+    public function columns(mixed ...$columnElements) : static
     {
         $elements = DisciteHtml::Tr()
             ->class($this->attributes()->rowClass());
@@ -182,12 +190,13 @@ final class Thead extends PairedClass
             $elements->add(
                 DisciteHtml::Th()
                     ->class($this->attributes()->checkboxClass())
-                    ->data($this->attributes()->columnIndexData(), (string)($i))
+                    ->attr($this->attributes()->columnIndexData(), (string)($i))
                     ->add(
                         $this->defaultCheckboxColumn
                     )
             );
 
+            $i++;
             $this->checkBoxAdded = true;
         }
         
@@ -196,11 +205,13 @@ final class Thead extends PairedClass
             $elements->add(
                 $this->columns[$i] ?? DisciteHtml::Th()
                     ->class(is_null($element) && isset($this->defaultEmptyColumn) ? $this->attributes()->emptyClass() : $this->attributes()->columnClass())
-                    ->data($this->attributes()->columnIndexData(), (string)($i + 1))
+                    ->attr($this->attributes()->columnIndexData(), (string)($i))
                     ->add(
                         is_null($element) && isset($this->defaultEmptyColumn) ? clone $this->defaultEmptyColumn : $element
                     )
             );
+
+            $i++;
         }
 
         if($this->hasActions && !$this->actionsAdded)
@@ -208,7 +219,7 @@ final class Thead extends PairedClass
             $elements->add(
                 DisciteHtml::Th()
                     ->class($this->attributes()->actionsClass())
-                    ->data($this->attributes()->columnIndexData(), (string)($i + 1))
+                    ->attr($this->attributes()->columnIndexData(), (string)($i))
                     ->add(
                         $this->defaultActionsColumn
                     )
@@ -321,30 +332,31 @@ final class Thead extends PairedClass
         $elements = DisciteHtml::Tr()
             ->class($this->attributes()->rowClass());
 
+        $i = 0;
+            
         if($this->hasCheckbox && !$this->checkBoxAdded)
         {
             $elements->add(
                 DisciteHtml::Th()
                     ->class($this->attributes()->checkboxClass())
-                    ->data($this->attributes()->columnIndexData(), '0')
+                    ->attr($this->attributes()->columnIndexData(), (string)($i))
                     ->add(
                         $this->defaultCheckboxColumn
                     )
             );
 
+            $i++;
             $this->checkBoxAdded = true;
         }
-
+        
         foreach($this->rows as $i => $columnElement)
         {
             $elements->add(
-                $this->columns[$i] ?? DisciteHtml::Th()
-                    ->class(is_null($columnElement) && isset($this->defaultEmptyColumn) ? $this->attributes()->emptyClass() : $this->attributes()->columnClass())
-                    ->data($this->attributes()->columnIndexData(), (string)($i + 1))
-                    ->add(
-                        is_null($columnElement) && isset($this->defaultEmptyColumn) ? clone $this->defaultEmptyColumn : $columnElement
-                    )
+                $columnElement
+                    ->attr($this->attributes()->columnIndexData(), (string)($i))
             );
+
+            $i++;
         }
 
         if($this->hasActions && !$this->actionsAdded)
@@ -352,7 +364,7 @@ final class Thead extends PairedClass
             $elements->add(
                 DisciteHtml::Th()
                     ->class($this->attributes()->actionsClass())
-                    ->data($this->attributes()->columnIndexData(), (string)(count($this->rows) + 2))
+                    ->attr($this->attributes()->columnIndexData(), (string)($i))
                     ->add(
                         $this->defaultActionsColumn
                     )
@@ -360,6 +372,20 @@ final class Thead extends PairedClass
 
             $this->actionsAdded = true;
         }
+
+        $this->add(
+            $elements
+        );
+    }
+
+    /**
+     * Count the number of children
+     * 
+     * @return int
+     */
+    public function count() : int
+    {
+        return (sizeof($this->childs()) == 0 ? (sizeof($this->rows)) : sizeof($this->childs()));
     }
 }
 

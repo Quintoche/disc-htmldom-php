@@ -47,8 +47,10 @@ use DisciteHtml\Elements\Paired\Ul;
 use DisciteHtml\Elements\Paired\Base;
 use DisciteHtml\Elements\Paired\Body;
 use DisciteHtml\Elements\Paired\G;
+use DisciteHtml\Elements\Paired\Hgroup;
 use DisciteHtml\Elements\Paired\Path;
 use DisciteHtml\Elements\Paired\Svg;
+use DisciteHtml\Elements\Paired\Template;
 use DisciteHtml\Elements\Paired\Title;
 use DisciteHtml\Elements\Voided\Br;
 use DisciteHtml\Elements\Voided\Hr;
@@ -106,6 +108,8 @@ class AppElements
 
     const ELEMENT_HEADER = Header::class;
 
+    const ELEMENT_HGROUP = Hgroup::class;
+
     const ELEMENT_LABEL = Label::class;
 
     const ELEMENT_LI = Li::class;
@@ -139,6 +143,8 @@ class AppElements
     const ELEMENT_TBODY = Tbody::class;
 
     const ELEMENT_TD = Td::class;
+
+    const ELEMENT_TEMPLATE = Template::class;
 
     const ELEMENT_TEXTAREA = Textarea::class;
 

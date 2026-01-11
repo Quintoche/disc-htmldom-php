@@ -117,11 +117,11 @@ final class Table extends PairedClass
     */
     public function toHtml() : string
     {
-        if(sizeof($this->thead->childs()) > 0) $this->add($this->thead);
+        if($this->thead->count() > 0) $this->add($this->thead);
         $this->add($this->tbody);
-        if(sizeof($this->tfoot->childs()) > 0) $this->add($this->tfoot);
-
-        return parent::toHtml();
+        if($this->tfoot->count() > 0) $this->add($this->tfoot);
+        
+        return $this->renderElement();
     }
 
 
@@ -156,11 +156,11 @@ final class Table extends PairedClass
 
     /** Add a header row.
      *
-     * @param Element|null $columnElements The columns to add to a row.
+     * @param mixed $columnElements The columns to add to a row.
      * 
      * @return static
      */
-    public function header(Element|null $columnElements) : static
+    public function header(mixed $columnElements) : static
     {
         $this->thead->column($columnElements);
         return $this;
@@ -168,11 +168,11 @@ final class Table extends PairedClass
 
     /** Set header rows.
      *
-     * @param Element|null ...$columnElements Columns to set to row.
+     * @param mixed ...$columnElements Columns to set to row.
      * 
      * @return static
      */
-    public function headers(Element|null ...$columnElements) : static
+    public function headers(mixed ...$columnElements) : static
     {
         $this->thead->columns(...$columnElements);
         return $this;
@@ -180,11 +180,11 @@ final class Table extends PairedClass
 
     /** Add a body row.
      *
-     * @param Element|null ...$columnElements The columns to add to a row.
+     * @param mixed ...$columnElements The columns to add to a row.
      * 
      * @return static
      */
-    public function body(Element|null ...$columnElements) : static
+    public function body(mixed ...$columnElements) : static
     {
         $this->tbody->rows(...$columnElements);
         return $this;

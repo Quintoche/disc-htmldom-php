@@ -37,14 +37,23 @@ trait Childs
     /**
      * Add a Child.
      *
-     * @param \DisciteHtml\Config\Classes\Element|string|int|float $child The child to add.
+     * @param \DisciteHtml\Config\Classes\Element|string|int|float|array<Element> $child The child to add.
      * 
      * @return static
      */
-    public function add(Element|string|int|float $child) : static
+    public function add(Element|string|int|float|array $child) : static
     {
         $obj = $this->isPreset();
 
+        if(is_array($child))
+        {
+            foreach($child as $c)
+            {
+                $obj->childs[] = $c;
+            }
+            return $obj;
+        }
+        
         $obj->childs[] = $child;
         return $obj;
     }
@@ -52,11 +61,11 @@ trait Childs
     /**
      * Alias for add() method to add a Child.
      *
-     * @param \DisciteHtml\Config\Classes\Element|string|int|float $child The child to add.
+     * @param \DisciteHtml\Config\Classes\Element|string|int|float|array<Element> $child The child to add.
      * 
      * @return static
      */
-    public function child(Element|string|int|float $child) : static
+    public function child(Element|string|int|float|array $child) : static
     {
         return $this->add($child);
     }
